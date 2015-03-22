@@ -1,0 +1,103 @@
+<!-- -*- mode: XML -*- -->
+
+<launch>
+	<node pkg="ardrone_autonomy" type="ardrone_driver" name="ardrone_autonomy" output="screen" args="-ip 192.168.1.200" clear_params="true">
+		<!-- Tunes the speed at which the ros loop runs, and thus, the rate at which navdata is published -->
+		<param name="looprate" value="50" />
+
+		<!-- Do we want to publish new-style navdata when received (true), or every time the ros-loop runs (false)? -->
+		<!-- (does not affect legacy navdata, which is always published at ros-loop rate) -->
+		<param name="realtime_navdata" value="true" />
+		<param name="realtime_video" value="true" />
+	    <param name="altitude_max" value="5000" />
+	    <param name="altitude_min" value="300" />
+	    <remap from="/cmd_vel" to="ardrone/cmd_vel"/>
+	</node>
+
+
+	<node pkg="rostopic" type="rostopic" name="navdataEcho" output="screen" args="echo /ardrone/navdata" />
+		
+	<node pkg="tf" type="static_transform_publisher" name="world_to_cam"  args="0 0 0.5 -1.57 0 -1.57 world camera 1" />
+	<node pkg="tf" type="static_transform_publisher" name="cam_to_camlink"   args="0 0 0 0 0 0 camera ardrone_base_bottomcam 1" />
+</launch>
+
+
+<!-- node pkg="tf" type="static_transform_publisher" name="world_to_cam"  args="x y z yaw pitch roll frame_id child_frame_id period_in_milisec" /-->
+
+
+	<!--<node pkg="hast" type="drone_navdata" name="drone_navdata" output="screen"/>-->
+
+<!-- rosrun ardrone_autonomy ardrone_driver _realtime_navdata:=True _navdata_demo:=0 -->
+
+
+<!--
+
+<node pkg="hast" type="stateRepeater" name="stateRepeater" /> 
+
+<launch>
+
+	<node name="ar_pose" pkg="ar_pose" type="ar_multi" respawn="false"   output="screen">
+		<param name="marker_pattern_list" type="string" value="$(find ar_pose)/data/marker_hast"/>
+	    <param name="threshold" type="int" value="50"/>
+	    <param name="use_history" type="bool" value="false"/>
+    	<remap from="/camera/camera_info" to="/ardrone/bottom/camera_info"/>
+	    <remap from="/camera/image_raw" to="/ardrone/bottom/image_raw"/>
+	</node>	
+
+	<group ns="drone">
+		<node pkg="ardrone_autonomy" type="ardrone_driver" name="ardrone_autonomy" output="screen" clear_params="true">
+		    <param name="navdata_demo" value="0" />
+			<param name="flying_mode" value="1" />
+		    <param name="detect_type" value="12" />
+
+		</node>
+		<node pkg="rostopic" type="rostopic" name="navdata" output="screen" args="echo /ardrone/navdata" />
+	</group>
+
+</launch>
+	
+	
+	
+<?xml version="1.0"?>
+
+roslaunch ar_pose ar_pose_multi_bona.launch 
+<launch>
+
+  <node pkg="tf" type="static_transform_publisher" name="world_to_cam"  args="0 0 0.5 -1.57 0 -1.57 world camera 1" />
+
+  <node pkg="tf" type="static_transform_publisher" name="cam_to_camlink"   args="0 0 0 0 0 0 camera ardrone_base_bottomcam 1" />
+
+  <node name="ar_pose" pkg="ar_pose" type="ar_multi" respawn="false"   output="screen">
+    <param name="marker_pattern_list" type="string" value="$(find ar_pose)/data/marker_hast"/>
+    <param name="threshold" type="int" value="100"/>
+    <remap from="/camera/camera_info" to="/ardrone/bottom/camera_info"/>
+    <remap from="/camera/image_raw" to="/ardrone/bottom/image_raw"/>
+
+  </node>
+</launch>
+
+
+
+
+<node pkg="odom_from_ar_marker" type="odom_from_ar_marker1" name="odom_marker_1" output="screen" />
+
+<node pkg="odom_from_ar_marker" type="odom_from_ar_marker2" name="odom_marker_2" output="screen" />
+
+<node pkg="odom_from_ar_marker" type="odom_from_ar_marker3" name="odom_marker_3" output="screen" />
+
+<node pkg="odom_from_ar_marker" type="odom_from_ar_marker4" name="odom_marker_4" output="screen" />
+
+<node pkg="odom_from_ar_marker" type="odom_from_ar_marker5" name="odom_marker_5" output="screen" />
+
+<node pkg="odom_from_ar_marker" type="odom_from_ar_marker6" name="odom_marker_6" output="screen" />
+
+<node pkg="odom_from_ar_marker" type="odom_from_ar_marker7" name="odom_marker_7" output="screen" />
+
+<node pkg="odom_from_ar_marker" type="odom_from_ar_marker8" name="odom_marker_8" output="screen" />
+
+<node pkg="odom_from_ar_marker" type="odom_from_ar_marker9" name="odom_marker_9" output="screen" />
+
+<node pkg="odom_from_ar_marker" type="odom_from_ar_marker10" name="odom_marker_10" output="screen" />
+
+<node pkg="odom_from_ar_marker" type="odom_from_ar_marker11" name="odom_marker_11" output="screen" />
+-->
