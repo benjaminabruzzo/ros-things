@@ -1,9 +1,5 @@
-
 //ROS Communications
 #include <ros/ros.h>
-	// Messages
-	#include <hast/flag.h>
-
 	// Services
 	#include <camera1394/SetCameraRegisters.h>
 
@@ -27,7 +23,6 @@ public:
 	setStrobe()
 	{
 		/*--------- Initialize ROS Communication ------------- */
-		HastShutDown_sub 		= n.subscribe("/hast/shutdown",  10, &setStrobe::nodeShutDown, this);
 		SetLeftRegisters_cli 	= n.serviceClient<camera1394::SetCameraRegisters>("/left/camera/set_camera_registers", true);
 		SetRightRegisters_cli 	= n.serviceClient<camera1394::SetCameraRegisters>("/right/camera/set_camera_registers", true);
 
@@ -38,15 +33,6 @@ public:
 		SetRegister_msg.request.offset = 2096; // This corresponds to the hex address of the externaltrigger: 0x830
 		SetRegister_msg.request.value = value;
 		SetRegister_msg.request.mode = 0;
-	}
-	
-	void nodeShutDown(const hast::flag::ConstPtr& ShutDown)
-	{ 
-		if(ShutDown->flag)
-		{
-			ROS_INFO("Shutting Down...");
-			ros::shutdown();
-		}
 	}
 };
 
