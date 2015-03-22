@@ -1,22 +1,3 @@
-// Programming tools
-#include <math.h>
-#include <cstdlib>
-#include <stdlib.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <string.h>
-#include <sstream>
-#include <iostream>
-
-//Vision tools
-// #include <cv.h>
-#include <opencv/cv.h>
-#include <cv_bridge/cv_bridge.h>
-#include <image_transport/image_transport.h>
-#include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <sensor_msgs/image_encodings.h>
-
 
 //ROS Communications
 #include <ros/ros.h>
@@ -50,9 +31,11 @@ public:
 		SetLeftRegisters_cli 	= n.serviceClient<camera1394::SetCameraRegisters>("/left/camera/set_camera_registers", true);
 		SetRightRegisters_cli 	= n.serviceClient<camera1394::SetCameraRegisters>("/right/camera/set_camera_registers", true);
 
-		value.push_back(2182086656);
+
+		// value.push_back(2181038080); // This translates to the binary version of: 10000010 00000000 00000000 00000000 which can be generated via PGR's flycap program
+		value.push_back(2182086656); // This translates to the binary version of: 10000010 00010000 00000000 00000000 which can be generated via PGR's flycap program
 		SetRegister_msg.request.type = 0;
-		SetRegister_msg.request.offset = 2096;
+		SetRegister_msg.request.offset = 2096; // This corresponds to the hex address of the externaltrigger: 0x830
 		SetRegister_msg.request.value = value;
 		SetRegister_msg.request.mode = 0;
 	}
