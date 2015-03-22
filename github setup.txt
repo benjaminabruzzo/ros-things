@@ -1,0 +1,10 @@
+# github
+
+git init
+git remote add origin https://github.com/benjaminabruzzo/ros-things.git
+
+echo "benjaminabruzzo" >> contributors.txt
+git add contributors.txt
+git commit -m 'SetCameraRegisters Standalone Node functional'
+git push -u origin master
+
